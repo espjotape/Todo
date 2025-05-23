@@ -1,6 +1,12 @@
+import Text from "./components/text";
+
 export default function App() {
   return (
-    <div className="text-pink-dark">Olá mundo!</div>
+    <div className="flex flex-col gap-2">
+      <Text variant="body-sm-bold" className="text-red">Olá mundo!</Text>
+      <Text className="text-green-base">Olá mundo!</Text>
+      <Text variant="body-md-bold" className="">Olá mundo!</Text>
+    </div>
   )
 }
 
