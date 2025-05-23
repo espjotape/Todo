@@ -1,6 +1,6 @@
-export function App() {
+export default function App() {
   return (
-   <h1>Olá mundo!</h1>
+    <div className="text-red-500">Olá mundo!</div>
   )
 }
 
