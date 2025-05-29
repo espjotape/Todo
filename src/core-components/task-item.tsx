@@ -6,7 +6,7 @@ import TrashIcon from "../assets/trash.svg?react"
 import Pencil from "../assets/pencil.svg?react"
 import CheckIcon from "../assets/check.svg?react"
 import XIcon from "../assets/x.svg?react"
-import { useState } from "react";
+import React, { useState } from "react";
 import InputText from "../components/input-text";
 import { Task, TaskState } from "../models/task";
 import { cx } from "class-variance-authority";
@@ -20,6 +20,8 @@ export default function TaskItem({task} : TaskItemProps ) {
   task?.state === TaskState.Creating
  )
 
+ const [taskTitle, setTaskTask] = useState("")
+
  function handleEditTask() {
   setIsEditing(true)
  }
@@ -28,11 +30,21 @@ export default function TaskItem({task} : TaskItemProps ) {
   setIsEditing(false)
  }
 
+ function handleChangeTaskTitle(e: React.ChangeEvent<HTMLInputElement>) {
+  setTaskTask(e.target.value || "")
+ }
+
+ function handleSaveTask(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault()
+  console.log({id: task.id, title: taskTitle})
+  setIsEditing(false)
+ }
+
  return( 
-  <Card size="md" className="flex items-center gap-4">
+  <Card size="md">
    {!isEditing ? (
-    <>
-     <InputCheckbox checked/>
+    <div className="flex items-center gap-4">
+     <InputCheckbox value={task.concluded?.toString()} checked={task.concluded}/>
      <Text className={cx("flex-1", {
       'line-through' : task?.concluded
      })}
@@ -44,15 +56,20 @@ export default function TaskItem({task} : TaskItemProps ) {
       <ButtonIcon icon={TrashIcon} variant="tertiary"/>
       <ButtonIcon icon={Pencil} variant="tertiary" onClick={handleEditTask}/>
      </div>
-    </> 
+    </div> 
    ) : (
-    <>
-     <InputText className="flex-1"/>
+    <form onSubmit={handleSaveTask} className="flex items-center gap-4" >
+     <InputText 
+      className="flex-1"
+      autoFocus
+      required
+      onChange={handleChangeTaskTitle}
+     />
       <div className="flex gap-1">
-      <ButtonIcon icon={XIcon} variant="secondary" onClick={handleExitEditTask}/>
-      <ButtonIcon icon={CheckIcon} variant="primary"/>
+      <ButtonIcon type="button" icon={XIcon} variant="secondary" onClick={handleExitEditTask}/>
+      <ButtonIcon type="submit" icon={CheckIcon} variant="primary"/>
      </div>
-    </>
+    </form>
    )
    }
   </Card>
