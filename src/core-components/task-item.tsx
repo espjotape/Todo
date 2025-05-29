@@ -22,13 +22,17 @@ export default function TaskItem({task} : TaskItemProps ) {
  )
 
  const [taskTitle, setTaskTask] = useState( task.title || "")
- const { updateTask, updateTaskStatus } = usePreparedTask()
+ const { updateTask, updateTaskStatus, deleteTask } = usePreparedTask()
 
  function handleEditTask() {
   setIsEditing(true)
  }
 
  function handleExitEditTask() {
+  if(task.state === TaskState.Creating) {
+   deleteTask(task.id)
+  }
+
   setIsEditing(false)
  }
 
@@ -47,6 +51,10 @@ export default function TaskItem({task} : TaskItemProps ) {
   updateTaskStatus(task.id, checked)
  }
 
+ function handleDeleteTask() {
+  deleteTask(task.id)
+ }
+
  return( 
   <Card size="md">
    {!isEditing ? (
@@ -63,7 +71,7 @@ export default function TaskItem({task} : TaskItemProps ) {
      </Text>
 
      <div className="flex gap-1">
-      <ButtonIcon icon={TrashIcon} variant="tertiary"/>
+      <ButtonIcon icon={TrashIcon} variant="tertiary" onClick={handleDeleteTask}/>
       <ButtonIcon icon={Pencil} variant="tertiary" onClick={handleEditTask}/>
      </div>
     </div> 
@@ -78,7 +86,7 @@ export default function TaskItem({task} : TaskItemProps ) {
      />
       <div className="flex gap-1">
       <ButtonIcon type="button" icon={XIcon} variant="secondary" onClick={handleExitEditTask}/>
-      <ButtonIcon type="submit" icon={CheckIcon} variant="primary"/>
+      <ButtonIcon type="submit" icon={CheckIcon} variant="primary" />
      </div>
     </form>
    )

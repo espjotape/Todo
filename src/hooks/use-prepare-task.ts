@@ -28,9 +28,14 @@ export default function usePreparedTask() {
   )
  }
 
+ function deleteTask(id: string) {
+  setTasks(tasks.filter((task) => task.id !== id))
+ }
+
  return {
   prepareTask,
   updateTask,
-  updateTaskStatus
+  updateTaskStatus,
+  deleteTask
  }
 }
